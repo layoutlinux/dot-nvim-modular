@@ -1,0 +1,19 @@
+# Directorios de datos y cache de Neovim
+.netrwhist
+undo/
+shada/
+
+# Archivos temporales de edición
+*.swp
+*.swo
+*.swn
+*.bak
+
+# Logs de error
+*.log
+
+/plugin/
+/pack/
+
+
+lazy-lock.json
