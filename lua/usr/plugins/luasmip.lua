@@ -1,0 +1,19 @@
+return {
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+      -- Carga los snippets de friendly-snippets
+      require("luasnip.loaders.from_vscode").lazy_load()
+      
+      -- Configuración de expansión con Tab
+      vim.keymap.set({"i", "s"}, "<Tab>", function()
+        if require("luasnip").expand_or_jumpable() then
+          require("luasnip").expand_or_jump()
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+        end
+      end, {silent = true})
+    end,
+  },
+}
