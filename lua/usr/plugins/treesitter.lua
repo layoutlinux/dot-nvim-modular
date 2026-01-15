@@ -1,33 +1,38 @@
 return {
-
+  {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    main = 'nvim-treesitter.configs',
-
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
+      -- Usamos pcall (protected call) para evitar que Neovim cruja si el plugin no ha cargado
+      local status_ok, configs = pcall(require, "nvim-treesitter.configs")
+      if not status_ok then
+        return
+      end
 
-      require("nvim-treesitter").setup({
-
-          ensure_installed = { 'bash', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'css', 'vim', 'vimdoc', 'ruby', 'ssh_config' },
-          auto_install = true,
-          highlight = {
-            enable = true,
-            additional_vim_regex_highlighting = { 'ruby' },
-      },
-
-          indent = { enable = true, disable = { 'ruby' } },
-
-          incremental_selection = {
-              enable = true,
-              keymaps = {
-                  init_selection = "gnn", 
-                  node_incremental = "grn",
-                  scope_incremental = "grc",
-                  node_decremental = "grm",
-              },
+      configs.setup({
+        ensure_installed = { 
+          "lua", "python", "bash", "vim", "vimdoc", "query", "markdown", "markdown_inline" 
+        },
+        sync_install = false,
+        auto_install = true,
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+        indent = {
+          enable = true,
+        },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = "<c-space>",
+            node_incremental = "<c-space>",
+            scope_incremental = "<c-s>",
+            node_decremental = "<M-space>",
           },
-
+        },
       })
-
-    end
+    end,
+  },
 }
