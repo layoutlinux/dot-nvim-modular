@@ -1,3 +1,30 @@
+-- Forzar reconocimiento de archivos Zsh para compatibilidad con LSP/Linters
+vim.filetype.add({
+  extension = {
+    zsh = "sh",
+    zshrc = "sh",
+    zprofile = "sh",
+  },
+})
+
+-- Autocomando para limpiar espacios al final de la línea antes de guardar
+local clean_group = vim.api.nvim_create_augroup("CleanWhitespace", { clear = true })
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = clean_group,
+  pattern = "*",
+  callback = function()
+    -- Guardar la posición actual del cursor para evitar saltos molestos
+    local save_cursor = vim.fn.getpos(".")
+    -- Ejecutar el comando de sustitución: %s/\s\+$//e
+    -- \s\+$ busca uno o más espacios al final de línea
+    -- /e evita que falle si no encuentra espacios
+    vim.cmd([[%s/\s\+$//e]])
+    -- Restaurar la posición del cursor
+    vim.fn.setpos(".", save_cursor)
+  end,
+})
+
 vim.opt.clipboard = "unnamedplus"
 vim.opt.cursorline = true
 vim.opt.expandtab = true

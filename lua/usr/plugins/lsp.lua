@@ -12,32 +12,28 @@ return {
       local mason_lspconfig = require("mason-lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- Diagnósticos minimalistas
-      vim.diagnostic.config({
-        virtual_text = { prefix = "»" },
-        severity_sort = true,
-        float = { border = "rounded" },
-      })
-
-      -- Mapeos de teclado al activar LSP
+      -- Mapeos LSP
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(ev)
           local opts = { buffer = ev.buf, remap = false }
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
           vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+          vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
           vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
           vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-          vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
         end,
       })
 
-      -- Servidores requeridos
+      -- Instalación de herramientas (LSP, Linters, Formatters)
       mason_lspconfig.setup({
-        ensure_installed = { "lua_ls", "pyright", "bashls" },
+        ensure_installed = { 
+          "lua_ls", "pyright", "bashls", -- LSP
+          "stylua", "black", "shfmt",    -- Formatters
+          "shellcheck", "pylint"         -- Linters
+        },
       })
 
-      -- Configuración de handlers
       mason_lspconfig.setup_handlers({
         function(server_name)
           lspconfig[server_name].setup({
