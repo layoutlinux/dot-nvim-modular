@@ -1,54 +1,33 @@
 return {
-  'nvim-lualine/lualine.nvim',
-  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  "nvim-lualine/lualine.nvim",
+  dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
-    -- Función para mostrar el conteo de búsqueda
-    local function search_result()
-      if vim.v.hlsearch == 0 then return '' end
-      local last_search = vim.fn.getreg('/')
-      if not last_search or last_search == '' then return '' end
-      local searchcount = vim.fn.searchcount { maxcount = 9999 }
-      return last_search .. ' (' .. searchcount.current .. '/' .. searchcount.total .. ')'
-    end
-
-    require('lualine').setup({
+    require("lualine").setup({
       options = {
-        theme = 'catppuccin',
-        
-        section_separators = { left = '', right = '' },
-        component_separators = '',
-        globalstatus = true, 
+        theme = "auto", -- Se adapta a tu esquema de colores
+        component_separators = { left = "│", right = "│" },
+        section_separators = { left = "", right = "" },
+        globalstatus = true, -- Barra única al final (ideal para Neo-tree)
+        disabled_filetypes = {
+          statusline = { "neo-tree", "alpha", "dashboard" },
+        },
       },
       sections = {
-        lualine_a = { { 'mode', separator = { right = '' }, right_padding = 2 } },
-        lualine_b = {
-          'branch',
-          'diff',
-          { 'diagnostics', sources = { 'nvim_diagnostic' } },
-        },
-        lualine_c = {
-          { 'filename', file_status = true, path = 1 },
-        },
-        lualine_x = {
-          {
-            'searchcount', 
-            maxcount = 999,
-            timeout = 500,
-          },
-        },
-        lualine_y = { 'filetype', 'progress' },
-        lualine_z = {
-          { '%l:%c', separator = { left = '' }, left_padding = 2 },
-        },
+        lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
+        lualine_b = { "branch", "diff", "diagnostics" },
+        lualine_c = { { "filename", path = 1 } }, -- 1 = Ruta relativa
+        lualine_x = { "encoding", "fileformat", "filetype" },
+        lualine_y = { "progress" },
+        lualine_z = { "location" },
       },
       inactive_sections = {
         lualine_a = {},
         lualine_b = {},
-        lualine_c = { 'filename' },
-        lualine_x = { 'location' },
+        lualine_c = { "filename" },
+        lualine_x = { "location" },
         lualine_y = {},
         lualine_z = {},
       },
     })
-  end
+  end,
 }

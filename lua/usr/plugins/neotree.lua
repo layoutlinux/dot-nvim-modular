@@ -5,29 +5,38 @@ return {
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
     "MunifTanjim/nui.nvim",
-    {
-      "s1n7ax/nvim-window-picker",
-      version = "2.*",
-      config = function()
-        require("window-picker").setup({
-          filter_rules = {
-            bo = {
-              filetype = { "neo-tree", "neo-tree-popup", "notify" },
-              buftype = { "terminal", "quickfix" },
-            },
-          },
-        })
-      end,
-    },
   },
   config = function()
     require("neo-tree").setup({
-      close_if_last_window = true, 
+      close_if_last_window = true,
       popup_border_style = "rounded",
       enable_git_status = true,
-      enable_diagnostics = true,
+      enable_diagnostics = true, -- Muestra errores de LSP en el árbol
       
-      -- Simplificación de la UI
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+          hide_by_name = {
+            ".DS_Store",
+            "thumbs.db",
+            "node_modules",
+          },
+        },
+        follow_current_file = {
+          enabled = true,
+        },
+        use_libuv_file_watcher = true,
+      },
+      window = {
+        width = 32,
+        mappings = {
+          ["<space>"] = "none",
+          ["l"] = "open",
+          ["h"] = "close_node",
+        },
+      },
       default_component_configs = {
         indent = {
           with_markers = true,
@@ -39,46 +48,18 @@ return {
           folder_open = "",
           folder_empty = "󰜌",
         },
-        git_status = {
+        diagnostics = {
           symbols = {
-            added = "✚",
-            modified = "",
-            deleted = "✖",
-            renamed = "󰁕",
-            untracked = "",
-            ignored = "",
-            unstaged = "󰄱",
-            staged = "",
-            conflict = "",
+            error = " ",
+            warn = " ",
+            hint = "󰌵 ",
+            info = " ",
           },
         },
       },
-      
-      window = {
-        width = 35,
-        mappings = {
-          ["<space>"] = "none", -- Desactivar el leader dentro de neotree para evitar lag
-          ["l"] = "open",       -- Navegación HJKL
-          ["h"] = "close_node",
-          ["S"] = "open_split",
-          ["s"] = "open_vsplit",
-          ["t"] = "open_tabnew",
-          ["w"] = "open_with_window_picker",
-        },
-      },
-      
-      filesystem = {
-        filtered_items = {
-          visible = false,
-          hide_dotfiles = false, 
-          hide_gitignored = true,
-        },
-        follow_current_file = { enabled = true }, 
-        use_libuv_file_watcher = true, 
-      },
     })
 
-    -- Keymap
-    vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle Neotree" })
+    -- Mapeo para abrir/cerrar con <leader>e
+    vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Explorador de Archivos" })
   end,
 }
