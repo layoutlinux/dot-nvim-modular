@@ -1,19 +1,27 @@
-# Directorios de datos y cache de Neovim
+# --- Neovim Runtime Data ---
 .netrwhist
 undo/
 shada/
-
-# Archivos temporales de edición
 *.swp
 *.swo
 *.swn
 *.bak
-
-# Logs de error
 *.log
 
-/plugin/
-/pack/
+# --- Plugin Manager Data ---
 
+/lazy-lock.json
+
+# --- LSP & Tooling Garbage ---
+
+.virtualenv/
+.venv/
+.python-learn/
+.ipynb_checkpoints/
+.ropeproject/
+
+# --- System & OS Garbage ---
+.DS_Store
+Thumbs.db
 
 
