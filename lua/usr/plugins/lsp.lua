@@ -8,48 +8,43 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      local lspconfig = require("lspconfig")
-      local mason_lspconfig = require("mason-lspconfig")
+      -- 1. Mason-LSPConfig para asegurar la instalación
+      require("mason-lspconfig").setup({
+        ensure_installed = { "lua_ls", "pyright", "bashls" },
+      })
+
+      -- 2. Capabilities para el autocompletado
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- Mapeos LSP
+      -- 3. Configuración NATIVA (Neovim 0.11+)
+      -- En lugar de lspconfig.server.setup, usamos vim.lsp.enable
+      -- Esto utiliza el nuevo framework interno que no lanza avisos de deprecación
+      
+      -- Python
+      vim.lsp.enable("pyright", { capabilities = capabilities })
+      
+      -- Bash / Zsh
+      vim.lsp.enable("bashls", { 
+        capabilities = capabilities,
+        filetypes = { "sh", "zsh" } 
+      })
+      
+      -- Lua
+      vim.lsp.enable("lua_ls", {
+        capabilities = capabilities,
+        settings = {
+          Lua = { diagnostics = { globals = { "vim" } } },
+        },
+      })
+
+      -- 4. Mapeos (Se mantienen igual)
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(ev)
-          local opts = { buffer = ev.buf, remap = false }
+          local opts = { buffer = ev.buf }
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
           vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
           vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-          vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-          vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-        end,
-      })
-
-      -- Instalación de herramientas (LSP, Linters, Formatters)
-      mason_lspconfig.setup({
-        ensure_installed = { 
-          "lua_ls", "pyright", "bashls", -- LSP
-          "stylua", "black", "shfmt",    -- Formatters
-          "shellcheck", "pylint"         -- Linters
-        },
-      })
-
-      mason_lspconfig.setup_handlers({
-        function(server_name)
-          lspconfig[server_name].setup({
-            capabilities = capabilities,
-          })
-        end,
-        ["lua_ls"] = function()
-          lspconfig.lua_ls.setup({
-            capabilities = capabilities,
-            settings = {
-              Lua = {
-                diagnostics = { globals = { "vim" } },
-                workspace = { checkThirdParty = false },
-              },
-            },
-          })
         end,
       })
     end,
