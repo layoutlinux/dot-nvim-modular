@@ -11,7 +11,7 @@ return {
         border       = "rounded",
         backdrop     = 60,
         preview = {
-          default      = 'bat', w
+          default      = 'bat', -- Corregido: eliminado 'w' y añadida coma
           border       = "rounded",
           layout       = "flex",
           flip_columns = 100,
@@ -52,7 +52,6 @@ return {
           args = "--color=always --style=numbers,changes",
         },
       },
-      -- Integración con Delta para mejores diffs en Desktop
       codeaction_native = {
         diff_opts = { ctxlen = 3 },
         pager = [[delta --width=$COLUMNS --hunk-header-style="omit" --file-style="omit"]],
