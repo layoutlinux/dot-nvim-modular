@@ -1,15 +1,18 @@
 return {
   {
     "L3MON4D3/LuaSnip",
+    -- Instalamos la librería de snippets como dependencia directa
     dependencies = { "rafamadriz/friendly-snippets" },
     config = function()
-      -- Carga los snippets de friendly-snippets
+      -- Esto carga los miles de snippets de la librería
       require("luasnip.loaders.from_vscode").lazy_load()
       
-      -- Configuración de expansión con Tab
+      local ls = require("luasnip")
+
+      -- Atajo para saltar entre campos del snippet con Tab
       vim.keymap.set({"i", "s"}, "<Tab>", function()
-        if require("luasnip").expand_or_jumpable() then
-          require("luasnip").expand_or_jump()
+        if ls.expand_or_jumpable() then
+          ls.expand_or_jump()
         else
           vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
         end

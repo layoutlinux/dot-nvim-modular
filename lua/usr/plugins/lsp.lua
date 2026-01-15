@@ -10,7 +10,7 @@ return {
     config = function()
       -- 1. Mason-LSPConfig para asegurar la instalación
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "pyright", "bashls" },
+        ensure_installed = { "lua_ls", "pyright", "bashls", "marksman" },
       })
 
       -- 2. Capabilities para el autocompletado
