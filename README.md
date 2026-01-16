@@ -24,6 +24,16 @@ Configuración de Neovim modular escrita en Lua, diseñada específicamente para
 | :---: | :---: | :---: |
 | ![Alpha](.assets/alpha.png) | ![Coding](.assets/lualine.png) | ![NEOTREE](.assets/neotree.png) | ![FZF](.assets/fzf-lua.png) | ![SPLIT](.assets/fzf-lua_split_v.png) | ![TERM](.assets/toggle_term.png) |
 
+## 📸 Galería (Screenshots)
+
+| Dashboard (Alpha) | Lualine, explorador y código | NEOTREE |
+| :---: | :---: | :---: |
+| ![Alpha](.assets/alpha.png) | ![Coding](.assets/lualine.png) | ![FZF](.assets/neotree.png) |
+
+| FZF | SPLIT | TERMINAL |
+| :---: | :---: |
+| ![Markdown](.assets/fzf-lua.png) | ![LSP](.assets/fzf-lua_split_v.png) | ![TERM](.assets/toggle_term.png) |
+
 ---
 
 
